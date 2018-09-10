@@ -174,7 +174,7 @@ go.stdenv.mkDerivation (
   checkPhase = args.checkPhase or ''
     runHook preCheck
     echo "CHECK PHASE HELLO!"
-    getGoDirs test | while read LINE; do echo "getGoDirs: ${LINE}"; done
+    getGoDirs test | while read LINE; do echo "getGoDirs: $LINE"; done
     getGoDirs test | parallel -j $NIX_BUILD_CORES buildGoDir test
 
     runHook postCheck
