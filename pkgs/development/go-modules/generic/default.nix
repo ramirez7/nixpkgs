@@ -72,7 +72,7 @@ let
 
   goPath = if goDeps != null then importGodeps { depsFile = goDeps; } ++ extraSrcs
                              else extraSrcs;
-  shellGoPath = [{ src = src; goPackagePath = goPackagePath}];
+  shellGoPath = [{ src = src; goPackagePath = goPackagePath;}] ++ goPath;
 in
 
 go.stdenv.mkDerivation (
