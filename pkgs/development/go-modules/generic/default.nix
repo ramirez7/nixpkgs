@@ -171,6 +171,7 @@ go.stdenv.mkDerivation (
     runHook postBuild
   '';
 
+  doCheck = args.doCheck or false;
   checkPhase = args.checkPhase or ''
     runHook preCheck
     echo "CHECK PHASE HELLO!"
