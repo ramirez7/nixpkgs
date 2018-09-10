@@ -72,6 +72,7 @@ let
 
   goPath = if goDeps != null then importGodeps { depsFile = goDeps; } ++ extraSrcs
                              else extraSrcs;
+  shellGoPath = [{ src = src; goPackagePath = goPackagePath}];
 in
 
 go.stdenv.mkDerivation (
@@ -201,7 +202,7 @@ go.stdenv.mkDerivation (
      mkdir -p "$d/src/$(dirname "${dep.goPackagePath}")"
      ln -s "${dep.src}" "$d/src/${dep.goPackagePath}"
   ''
-  ) goPath) + ''
+  ) shellGoPath) + ''
     export GOPATH=${lib.concatStringsSep ":" ( ["$d"] ++ ["$GOPATH"] ++ ["$PWD"] ++ extraSrcPaths)}
   '' + shellHook;
 
