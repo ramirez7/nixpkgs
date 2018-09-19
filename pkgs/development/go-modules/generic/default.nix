@@ -176,8 +176,6 @@ go.stdenv.mkDerivation (
     runHook preCheck
     echo "CHECK PHASE HELLO!"
     echo "GOPATH = $GOPATH"
-    getGoDirs test | while read LINE; do echo "getGoDirs: $LINE"; done
-    echo "getGoDirs DEBUG DONE"
     getGoDirs test | parallel -j $NIX_BUILD_CORES buildGoDir test
     echo "DONE TESTING!"
     runHook postCheck
