@@ -148,7 +148,7 @@ go.stdenv.mkDerivation (
         echo "$subPackages" | sed "s,\(^\| \),\1$goPackagePath/,g"
       else
         pushd "$NIX_BUILD_TOP/go/src" >/dev/null
-        find "$goPackagePath" -type f -name \*$type.go -exec dirname {} \; | grep -v "/vendor/" | sort | uniq
+        find "$goPackagePath" -type f -name \*$type.go -exec dirname {} \; | grep -v "/vendor/" | sort | uniq || [[ $? == 1 ]]
         popd >/dev/null
       fi
     }
@@ -175,6 +175,7 @@ go.stdenv.mkDerivation (
   checkPhase = args.checkPhase or ''
     runHook preCheck
     echo "CHECK PHASE HELLO!"
+    shopt -o pipefail
     echo "GOPATH = $GOPATH"
     getGoDirs test | parallel -j $NIX_BUILD_CORES buildGoDir test
     echo "DONE TESTING!"
