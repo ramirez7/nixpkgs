@@ -6,11 +6,11 @@ with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "feh-${version}";
-  version = "2.27.1";
+  version = "2.28.1";
 
   src = fetchurl {
     url = "https://feh.finalrewind.org/${name}.tar.bz2";
-    sha256 = "10zk76l491s22qrv86rax6cvpgwyl3qq0izl2pbk0k1z1kw3ihvf";
+    sha256 = "0wian0gnx0yfxf8x9b8wr57fjd6rnmi3y3xj83ni6x0xqrjnf1lp";
   };
 
   outputs = [ "out" "man" "doc" ];

@@ -16,6 +16,10 @@ nodePackages // {
     '';
   };
 
+  jshint = nodePackages.jshint.override {
+    buildInputs = [ pkgs.phantomjs2 ];
+  };
+
   dat = nodePackages.dat.override {
     buildInputs = [ nodePackages.node-gyp-build ];
   };
@@ -27,14 +31,15 @@ nodePackages // {
     '';
   };
 
-  ios-deploy = nodePackages.ios-deploy.override {
+  ios-deploy = nodePackages.ios-deploy.override (drv: {
+    nativeBuildInputs = drv.nativeBuildInputs or [] ++ [ pkgs.buildPackages.rsync ];
     preRebuild = ''
       LD=$CC
       tmp=$(mktemp -d)
       ln -s /usr/bin/xcodebuild $tmp
       export PATH="$PATH:$tmp"
     '';
-  };
+  });
 
   fast-cli = nodePackages."fast-cli-1.x".override {
     preRebuild = ''
@@ -42,6 +47,10 @@ nodePackages // {
       sed -i -e "s|console.error('Error verifying phantomjs, continuing', err)|console.error('Error verifying phantomjs, continuing', err); return true;|" node_modules/phantomjs-prebuilt/lib/util.js
     '';
     buildInputs = [ pkgs.phantomjs2 ];
+  };
+
+  git-ssb = nodePackages.git-ssb.override {
+    buildInputs = [ nodePackages.node-gyp-build ];
   };
 
   node-inspector = nodePackages.node-inspector.override {
@@ -77,6 +86,10 @@ nodePackages // {
     '';
   };
 
+  scuttlebot = nodePackages.scuttlebot.override {
+    buildInputs = [ pkgs.automake pkgs.autoconf nodePackages.node-gyp-build ];
+  };
+
   statsd = nodePackages.statsd.override {
     # broken with node v8, dead upstream,
     # see #45946 and https://github.com/etsy/statsd/issues/646
@@ -100,6 +113,10 @@ nodePackages // {
     '';
 
     dontNpmInstall = true; # We face an error with underscore not found, but the package will work fine if we ignore this.
+  };
+
+  webtorrent-cli = nodePackages.webtorrent-cli.override {
+    buildInputs = [ nodePackages.node-gyp-build ];
   };
 
 }

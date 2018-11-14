@@ -2,7 +2,7 @@
 
 { mkDerivation, lib, fetchgit, fetchsvn
 , pkgconfig, pythonPackages, cmake, wrapGAppsHook
-, qtbase, qtimageformats, gtk3, libappindicator-gtk3, libnotify
+, qtbase, qtimageformats, gtk3, libappindicator-gtk3, libnotify, xdg_utils
 , dee, ffmpeg, openalSoft, minizip, libopus, alsaLib, libpulseaudio, range-v3
 }:
 
@@ -97,7 +97,9 @@ mkDerivation rec {
     sed -i Telegram/ThirdParty/libtgvoip/libtgvoip.gyp \
       -e "/-msse2/d"
 
-    gyp \
+    gyp ${lib.optionalString (!stable) ''
+        -Dapi_id=17349 \
+        -Dapi_hash=344583e45741c457fe1862106095a5eb ''}\
       -Dbuild_defines=${GYP_DEFINES} \
       -Gconfig=Release \
       --depth=Telegram/gyp \
@@ -131,6 +133,7 @@ mkDerivation rec {
     wrapProgram $out/bin/telegram-desktop \
       "''${gappsWrapperArgs[@]}" \
       --prefix QT_PLUGIN_PATH : "${qtbase}/${qtbase.qtPluginPrefix}" \
+      --prefix PATH : ${xdg_utils}/bin \
       --set XDG_RUNTIME_DIR "XDG-RUNTIME-DIR"
     sed -i $out/bin/telegram-desktop \
       -e "s,'XDG-RUNTIME-DIR',\"\''${XDG_RUNTIME_DIR:-/run/user/\$(id --user)}\","

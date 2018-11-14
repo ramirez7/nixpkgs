@@ -1,6 +1,4 @@
-{ system, minimal ? false, config ? {} }:
-
-let pkgs = import ../.. { inherit system config; }; in
+{ system, pkgs, minimal ? false, config ? {} }:
 
 with pkgs.lib;
 with import ../lib/qemu-flags.nix { inherit pkgs; };
@@ -28,7 +26,7 @@ rec {
       modules = configurations ++
         [ ../modules/virtualisation/qemu-vm.nix
           ../modules/testing/test-instrumentation.nix # !!! should only get added for automated test runs
-          { key = "no-manual"; services.nixosManual.enable = false; }
+          { key = "no-manual"; documentation.nixos.enable = false; }
           { key = "qemu"; system.build.qemu = qemu; }
         ] ++ optional minimal ../modules/testing/minimal-kernel.nix;
       extraArgs = { inherit nodes; };
