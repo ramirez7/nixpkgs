@@ -8,13 +8,13 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "nix-review";
-  version = "0.6.0";
+  version = "1.0.1";
 
   src = fetchFromGitHub {
     owner = "Mic92";
     repo = "nix-review";
     rev = version;
-    sha256 = "1391fs33jlg1pnfxpfhvry4sb4p4hy8gjpipnnxm8483f12b49km";
+    sha256 = "18z7dws3ngx0ffqqgybq65xxsiycildd101q58sj51z1k3lnrynh";
   };
 
   makeWrapperArgs = [
