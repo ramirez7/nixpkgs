@@ -213,8 +213,8 @@ let
     shellHook = ''
       d=$(mktemp -d "--suffix=-$name")
       mkdir -p "$d/src/$(dirname "${goPackagePath}")"
-      echo "SHELLHOOK SRC = ${src}"
-      ln -s ${src} "$d/src/${goPackagePath}"
+      echo "SHELLHOOK TOP = $NIX_BUILD_TOP"
+      ln -s $NIX_BUILD_TOP "$d/src/${goPackagePath}"
     '' + toString (map (dep: ''
        mkdir -p "$d/src/$(dirname "${dep.goPackagePath}")"
        ln -s "${dep.src}" "$d/src/${dep.goPackagePath}"
